@@ -6,4 +6,5 @@
 """
 
 from .mpc import *
+from .dynamics import *
 from . import mat_help
