@@ -1,0 +1,22 @@
+Notes on performance
+====================
+
+Closed loop MPC simulation
+--------------------------
+
+for a 1D system, horizon nh=30 pts
+
+%timeit ctrl.solve_u_opt()
+    0.45 ms
+
+closed loop simulation on n_sim=240 pts:
+
+%timeit ctrl.closed_loop_sim(T0, n_sim, dyn, Ts_fcast, T_ext_fcast)
+   143 ms
+
+→ 0.60 ms per step
+
+and for longer horizons:
+
+→ 0.75 ms for nh=50
+→ 1.66 ms for nh=100
