@@ -17,16 +17,16 @@ def assert_allclose6(a,b):
     return assert_allclose(a, b, 1e-6, 1e-6)
 
 
-import dmpc as mpc
+import dmpc
 
 def test_dyn_from_thermal():
-    dyn = mpc.dyn_from_thermal(5, 1, dt=0.1)
+    dyn = dmpc.dyn_from_thermal(5, 1, dt=0.1)
     assert_equal(dyn.A, 0.98)
     assert_equal(dyn.Bu, 0.1)
     assert_equal(dyn.Bp, 0.02)
     assert_equal(dyn.C, 1)
     
-    dyn2 = mpc.dyn_from_thermal([5,5], [1,1], dt=0.1)
+    dyn2 = dmpc.dyn_from_thermal([5,5], [1,1], dt=0.1)
     I2 = np.identity(2)
     assert_allclose9(dyn2.A, 0.98*I2)
     assert_allclose9(dyn2.Bu, 0.1*I2)
@@ -34,8 +34,9 @@ def test_dyn_from_thermal():
     assert_allclose9(dyn2.C, I2)
 
 def test_block_toeplitz():
+    from dmpc.mat_help import block_toeplitz
     assert_allclose9(
-        mpc.block_toeplitz([1,2,3], [1,4,5,6]),
+        block_toeplitz([1,2,3], [1,4,5,6]),
         np.array([[1, 4, 5, 6],
                   [2, 1, 4, 5],
                   [3, 2, 1, 4]])
@@ -43,7 +44,7 @@ def test_block_toeplitz():
     
     I2 = np.eye(2)
     assert_allclose9(
-        mpc.block_toeplitz([1*I2,2*I2,3*I2], [1*I2,4*I2,5*I2,6*I2]),
+        block_toeplitz([1*I2,2*I2,3*I2], [1*I2,4*I2,5*I2,6*I2]),
         np.array([[1, 0, 4, 0, 5, 0, 6, 0],
                   [0, 1, 0, 4, 0, 5, 0, 6],
                   [2, 0, 1, 0, 4, 0, 5, 0],
@@ -53,7 +54,7 @@ def test_block_toeplitz():
         )
     
     assert_allclose9(
-        mpc.block_toeplitz([1*I2,2*I2,3*I2], [1,4,5,6]),
+        block_toeplitz([1*I2,2*I2,3*I2], [1,4,5,6]),
         np.array([[1, 0, 4, 4, 5, 5, 6, 6],
                   [0, 1, 4, 4, 5, 5, 6, 6],
                   [2, 0, 1, 0, 4, 4, 5, 5],
@@ -66,7 +67,7 @@ def get_dyn(c_th):
     '''creates a LinDyn of a thermal system'''
     r_th = 20
     dt = 0.2 #h
-    dyn = mpc.dyn_from_thermal(r_th, c_th, dt, "thermal subsys")
+    dyn = dmpc.dyn_from_thermal(r_th, c_th, dt, "thermal subsys")
     
     return dyn, dt
 
@@ -77,7 +78,7 @@ def test_pred_mat():
     n_hor = int(2.5/dt)
     assert n_hor == 12
     t = np.arange(1, n_hor+1)*dt
-    F, Hu, Hp = mpc.pred_mat(n_hor, dyn.A, dyn.C, dyn.Bu, dyn.Bp)
+    F, Hu, Hp = dmpc.pred_mat(n_hor, dyn.A, dyn.C, dyn.Bu, dyn.Bp)
 
     zn = np.zeros(n_hor)[:,None]
     T_ext_hor = 2 + zn # °C
@@ -123,10 +124,10 @@ class test_MPC():
         self.c_th = c_th
         
         # 1D system
-        self.dyn1 = mpc.dyn_from_thermal(r_th, c_th, dt, "1d thermal 1hour")
+        self.dyn1 = dmpc.dyn_from_thermal(r_th, c_th, dt, "1d thermal 1hour")
         
         # 2D system
-        self.dyn2 = mpc.dyn_from_thermal([r_th]*2, [c_th]*2, dt, "2d thermal 1hour")
+        self.dyn2 = dmpc.dyn_from_thermal([r_th]*2, [c_th]*2, dt, "2d thermal 1hour")
     
     def test_pred_output(self):
         '''test MPC.pred_output method for 2d system'''
@@ -139,7 +140,7 @@ class test_MPC():
         assert n_hor == 12
         
         u_max = 1.2 #kW
-        c2 = mpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
+        c2 = dmpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
         
         # input predictions. needs to be flattened
         T_ext_hor = 2+np.zeros((n_hor, n_sys)) # °C
@@ -183,7 +184,7 @@ class test_MPC():
         assert n_hor == 12
         
         u_max = 1.2 #kW
-        ctrl = mpc.MPC(dyn, n_hor, 0, u_max, 1, 100)
+        ctrl = dmpc.MPC(dyn, n_hor, 0, u_max, 1, 100)
 
         zn = np.zeros(n_hor)[:,None]
         T_ext_hor = 2 + zn # °C
@@ -228,7 +229,7 @@ class test_MPC():
         assert n_hor == 12
         
         u_max = 1.2 #kW
-        c2 = mpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
+        c2 = dmpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
         
         # input predictions. needs to be flattened
         T_ext_hor = 2+np.zeros((n_hor, n_sys)) # °C
@@ -277,13 +278,13 @@ class test_MPC():
         assert n_sim == 15
         
         u_max = 1.2 #kW
-        ctrl = mpc.MPC(dyn, n_hor, 0, u_max, 1, 100)
+        ctrl = dmpc.MPC(dyn, n_hor, 0, u_max, 1, 100)
 
         Ts_fcast_arr = 18 + np.zeros(n_sim+n_hor) # °C
         Ts_fcast_arr[n_sim//2:] = 22 # °C
-        Ts_fcast = mpc.Oracle(Ts_fcast_arr)
+        Ts_fcast = dmpc.Oracle(Ts_fcast_arr)
         
-        T_ext_fcast = mpc.ConstOracle(2) # °C
+        T_ext_fcast = dmpc.ConstOracle(2) # °C
         
         T0 = np.atleast_2d(20) # °C
         
@@ -356,13 +357,13 @@ class test_MPC():
         assert n_sim == 15
         
         u_max = 1.2 #kW
-        c2 = mpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
+        c2 = dmpc.MPC(dyn2, n_hor, 0, u_max, 1, 100)
 
         Ts_fcast_arr = 18 + np.zeros((n_sim+n_hor, n_sys)) # °C
         Ts_fcast_arr[n_sim//2:] = 22 # °C
-        Ts_fcast = mpc.Oracle(Ts_fcast_arr)
+        Ts_fcast = dmpc.Oracle(Ts_fcast_arr)
         
-        T_ext_fcast = mpc.ConstOracle([2, 2]) # °C
+        T_ext_fcast = dmpc.ConstOracle([2, 2]) # °C
         
         T0 = np.array([20,10]).reshape((n_sys,1)) # °C
         
