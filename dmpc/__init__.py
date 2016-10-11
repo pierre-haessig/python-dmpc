@@ -7,4 +7,5 @@
 
 from .mpc import *
 from .dynamics import *
+from .distributed import *
 from . import mat_help
