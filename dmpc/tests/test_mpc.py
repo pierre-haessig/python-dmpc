@@ -17,7 +17,7 @@ def assert_allclose6(a,b):
     return assert_allclose(a, b, 1e-6, 1e-6)
 
 
-import mpc
+import dmpc as mpc
 
 def test_dyn_from_thermal():
     dyn = mpc.dyn_from_thermal(5, 1, dt=0.1)
