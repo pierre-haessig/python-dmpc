@@ -1,7 +1,7 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 # Pierre Haessig — July 2016
-""" A toolbox for Model Predictive Control (MPC) and Distributed MPC.
+""" module for the Model Predictive Control aspect
 """
 
 from __future__ import division, print_function, unicode_literals

@@ -11,6 +11,10 @@ Classes
 Functions:
 
 * dyn_from_thermal(r_th, c_th, dt, name=None)
+
+TODO: investigate the partial overlap with scipy.signal.dlti
+(http://docs.scipy.org/doc/scipy/reference/generated/scipy.signal.dlti.html)
+and scipy.signal.StateSpace
 """
 
 from __future__ import division, print_function, unicode_literals
