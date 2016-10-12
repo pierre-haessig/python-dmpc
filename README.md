@@ -19,8 +19,8 @@ to solve linear or quadratic optimization problems.
 
 To install `dmpc` directly from the source tree:
 
-  pip install git+git://github.com/pierre-haessig/python-dmpc.git
+    pip install git+git://github.com/pierre-haessig/python-dmpc.git
 
 or clone the repository first and then run:
 
-  pip install .
+    pip install .
