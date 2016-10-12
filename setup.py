@@ -10,7 +10,8 @@ setup(
     install_requires = ["numpy", "cvxopt>=1.1.8"],
 
     extras_require = {
-            'plots':  ["matplotlib"],
+            'plots': ["matplotlib"],
+            'test':  ["nose"]
     },
 
     url='https://github.com/pierre-haessig/python-dmpc',
