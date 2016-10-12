@@ -5,6 +5,7 @@
 """
 
 from .mpc import *
+from . import dynamics
 from .dynamics import *
 from .distributed import *
 from . import mat_help

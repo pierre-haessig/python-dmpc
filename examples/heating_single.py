@@ -29,7 +29,7 @@ print('Resistance R: {} °C/kW'.format(R))
 print('P_max: {} kWh'.format(P_max))
 
 
-dyn = dmpc.dyn_from_thermal(R, C, dt, 'single room')
+dyn = dmpc.dynamics.from_thermal(R, C, dt, 'single room')
 
 # Create the MPC controller
 th = 2 # hours

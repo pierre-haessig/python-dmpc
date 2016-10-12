@@ -19,14 +19,14 @@ def assert_allclose6(a,b):
 
 import dmpc
 
-def test_dyn_from_thermal():
-    dyn = dmpc.dyn_from_thermal(5, 1, dt=0.1)
+def test_dynamics_from_thermal():
+    dyn = dmpc.dynamics.from_thermal(5, 1, dt=0.1)
     assert_equal(dyn.A, 0.98)
     assert_equal(dyn.Bu, 0.1)
     assert_equal(dyn.Bp, 0.02)
     assert_equal(dyn.C, 1)
     
-    dyn2 = dmpc.dyn_from_thermal([5,5], [1,1], dt=0.1)
+    dyn2 = dmpc.dynamics.from_thermal([5,5], [1,1], dt=0.1)
     I2 = np.identity(2)
     assert_allclose9(dyn2.A, 0.98*I2)
     assert_allclose9(dyn2.Bu, 0.1*I2)
@@ -67,7 +67,7 @@ def get_dyn(c_th):
     '''creates a LinDyn of a thermal system'''
     r_th = 20
     dt = 0.2 #h
-    dyn = dmpc.dyn_from_thermal(r_th, c_th, dt, "thermal subsys")
+    dyn = dmpc.dynamics.from_thermal(r_th, c_th, dt, "thermal subsys")
     
     return dyn, dt
 
@@ -124,10 +124,10 @@ class test_MPC():
         self.c_th = c_th
         
         # 1D system
-        self.dyn1 = dmpc.dyn_from_thermal(r_th, c_th, dt, "1d thermal 1hour")
+        self.dyn1 = dmpc.dynamics.from_thermal(r_th, c_th, dt, "1d thermal 1hour")
         
         # 2D system
-        self.dyn2 = dmpc.dyn_from_thermal([r_th]*2, [c_th]*2, dt, "2d thermal 1hour")
+        self.dyn2 = dmpc.dynamics.from_thermal([r_th]*2, [c_th]*2, dt, "2d thermal 1hour")
     
     def test_pred_output(self):
         '''test MPC.pred_output method for 2d system'''

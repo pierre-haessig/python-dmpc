@@ -22,6 +22,8 @@ import numpy as np
 
 from dmpc import pred_mat
 
+__all__ = ['LinDyn']
+
 class LinDyn(object):
     "Dynamics of a discrete time linear system (LTI)"
     def __init__(self, A, Bu, Bp, C, name=None):
@@ -80,7 +82,14 @@ class LinDyn(object):
         return 'LinDyn {name} \n  dims x:{0.nx}, u:{0.nu}, p:{0.np}, y:{0.ny}'.format(self, name=name)
 
 
-def dyn_from_thermal(r_th, c_th, dt, name=None):
+def from_thermal(r_th, c_th, dt, name=None):
+    '''Dynamics of a thermal model (in discrete time)
+    
+    Creates a LinDyn from a list of thermal resistances `r_th`
+    and capacitances `c_th`. `dt` is the timestep.
+    
+    `r_th` and `c_th` should be scalars or lists with same length.
+    '''
     r_th = np.asarray(r_th, dtype=float).ravel()
     c_th = np.asarray(c_th, dtype=float).ravel()
     assert r_th.shape == c_th.shape
