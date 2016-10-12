@@ -7,7 +7,7 @@ setup(
     packages = ['dmpc', 'dmpc.tests'],
 
     test_suite='dmpc.tests',
-    install_requires = ["numpy", "cvxopt"],
+    install_requires = ["numpy", "cvxopt>=1.1.8"],
 
     extras_require = {
             'plots':  ["matplotlib"],
