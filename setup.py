@@ -4,7 +4,7 @@ setup(
 
     name = "dmpc",
     version = '0.1',
-    packages = ['dmpc'],
+    packages = ['dmpc', 'dmpc.tests'],
 
     test_suite='dmpc.tests',
     install_requires = ["numpy", "cvxopt"],
@@ -13,6 +13,7 @@ setup(
             'plots':  ["matplotlib"],
     },
 
+    url='https://github.com/pierre-haessig/python-dmpc',
     author = "Pierre Haessig",
     author_email = "pierre.haessig@centralesupelec.fr",
 
